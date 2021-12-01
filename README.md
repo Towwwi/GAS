@@ -1,2 +1,0 @@
-# GAS
-GAS dokumentaatio
