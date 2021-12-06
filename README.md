@@ -229,6 +229,37 @@ Kuva 17. Character-luokassa suoritettava ASC:n alustus OnRep_PlayerState-funktio
 
 Nyt pelihahmolla on käytössä ASC ja se on valmis GAS:n työkalujen käyttöön.
 
+### 3.2	AttributeSet lisäys
+
+Haluamme aluksi hahmoille käyttöön ainakin manan ja elämäpisteet. Tämä tarkoittaa että hahmot tarvitsevat sen nimiset attribuutit ja attribuutit sijaitsevat AttributeSet-luokassa. Luodaan ensimmäisenä AttributeSet C++-luokka (Kuva18). Lisäksi kannattaa luoda attribuutti vahingon tuottamiselle, esimerkiksi Damage(vahinko).
+
+![attr1](https://user-images.githubusercontent.com/55107172/144851867-a03b46d7-13fb-4711-ad9e-72ab1f67c1ad.JPG)
+Kuva 18. Luodaan uusi AttributeSet C++-luokka.
+
+AttributeSettiin kannattaa aluksi määritellä pari valmista macroa (Kuva19). Tämä automaattisesti luo "Getter" ja "Setter"-functiot attribuuteille.
+
+![Cafffpture](https://user-images.githubusercontent.com/55107172/144852718-fd5ecd89-a22a-4f55-90c1-f95882a50446.JPG)
+Kuva 19.  AttributeSetBase.h Macrot
+
+Seuraavaksi ylikirjoitetaan kolme funktiota (Kuva 20):
+
+- PreAttributeChange
+- PostGameplayEffectExecute
+- GetLifetimeReplicatedProps.
+
+![Captfddfdfure](https://user-images.githubusercontent.com/55107172/144853613-749a9951-7be6-4c1a-b04a-03fda62de1f1.JPG)
+Kuva 20. Ylikirjoitetaan funktiot joita AttributeSet hyödyntää.
+
+Nyt luodaan ensimmäinen attribuutti: Health(elämäpisteet) sekä sille maksimi arvo jota pystyy myös muokkaamaan efekteillä, eli MaxHealth(Maksimielämäpisteet) (Kuva 21). Moninpeliä luodessa attribuuteille pitää tehdä myös OnRep-funktiot (Kuva 22). Jokainen attribuutti luodaan samalla tyylillä, ohjelmoijan pitää vain miettiä kuvaavat nimet attribuuteille, tarvitseeko ne maksimi arvoa ja pitääkö ne replikoida. Damage attribuutilla demossani ei ole maksimi arvoa ja se on olemassa vain serverillä, joten sitä ei tarvitse replikoida. Damage-attribuutti luodaan tässä tapauksessa yksinkertaisemmin (kuva 23).
+
+![Captghghghure](https://user-images.githubusercontent.com/55107172/144856495-6d2170fa-3de4-439b-8fa7-26667896d9dc.JPG)
+Kuva 21. Health ja MaxHealth attribuutit.
+
+![Captuggggre](https://user-images.githubusercontent.com/55107172/144857062-06fd6997-62c1-4720-aa64-ac9f8e00de29.JPG)
+Kuva 22. OnRep-funktiot.
+
+![fgfgfgd](https://user-images.githubusercontent.com/55107172/144858448-b71c947f-d085-44df-944f-516288c86e64.PNG)
+Kuva 23. Damage-attribuutti.
 
 ## 7	Lähdeluettelo
 
