@@ -237,7 +237,7 @@ Kuva 18. Luodaan uusi AttributeSet C++-luokka.
 
 AttributeSettiin kannattaa aluksi määritellä pari valmista macroa (Kuva19). Tämä automaattisesti luo "Getter" ja "Setter"-functiot attribuuteille.
 
-![Cafffpture](https://user-images.githubusercontent.com/55107172/144852718-fd5ecd89-a22a-4f55-90c1-f95882a50446.JPG)
+![attribtemacro](https://user-images.githubusercontent.com/55107172/145461516-ec3d3d81-2a28-4baf-9a5b-49767926c87e.PNG)
 Kuva 19.  AttributeSetBase.h Macrot
 
 Seuraavaksi ylikirjoitetaan kolme funktiota (Kuva 20):
@@ -246,18 +246,18 @@ Seuraavaksi ylikirjoitetaan kolme funktiota (Kuva 20):
 - PostGameplayEffectExecute
 - GetLifetimeReplicatedProps.
 
-![Captfddfdfure](https://user-images.githubusercontent.com/55107172/144853613-749a9951-7be6-4c1a-b04a-03fda62de1f1.JPG)
+![attributeoverride](https://user-images.githubusercontent.com/55107172/145462890-57bf06b6-d6bb-4900-b0f8-adfff752c000.PNG)
 Kuva 20. Ylikirjoitetaan funktiot joita AttributeSet hyödyntää.
 
 Nyt luodaan ensimmäinen attribuutti: Health(elämäpisteet) sekä sille maksimi arvo jota pystyy myös muokkaamaan efekteillä, eli MaxHealth(Maksimielämäpisteet) (Kuva 21). Moninpeliä luodessa attribuuteille pitää tehdä myös OnRep-funktiot (Kuva 22). Jokainen attribuutti luodaan samalla tyylillä, ohjelmoijan pitää vain miettiä kuvaavat nimet attribuuteille, tarvitseeko ne maksimi arvoa ja pitääkö ne replikoida. Damage attribuutilla demossani ei ole maksimi arvoa ja se on olemassa vain serverillä, joten sitä ei tarvitse replikoida. Damage-attribuutti luodaan tässä tapauksessa yksinkertaisemmin (kuva 23).
 
-![Captghghghure](https://user-images.githubusercontent.com/55107172/144856495-6d2170fa-3de4-439b-8fa7-26667896d9dc.JPG)
+![heathlandmaxhp](https://user-images.githubusercontent.com/55107172/145462935-b4757a3f-41f2-4847-b732-59546f63f61d.PNG)
 Kuva 21. Health ja MaxHealth attribuutit.
 
-![Captuggggre](https://user-images.githubusercontent.com/55107172/144857062-06fd6997-62c1-4720-aa64-ac9f8e00de29.JPG)
+![hponreps](https://user-images.githubusercontent.com/55107172/145462953-e0c0a30a-dd47-4792-8397-97963e7a89c9.PNG)
 Kuva 22. OnRep-funktiot.
 
-![fgfgfgd](https://user-images.githubusercontent.com/55107172/144858448-b71c947f-d085-44df-944f-516288c86e64.PNG)
+![damageattribute](https://user-images.githubusercontent.com/55107172/145462972-9324945a-b8d7-455c-9cf3-7b9677fd2c1b.PNG)
 Kuva 23. Damage-attribuutti.
 
 ## 7	Lähdeluettelo
