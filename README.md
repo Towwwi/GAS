@@ -181,25 +181,24 @@ Koska demossa luodaan moninpeli ratkaisua, kohdassa ”5.1 Ability System Compon
 Ensiksi peritään PlayerState-luokassa ”AbilitySystemInterface”-luokka ja luomme konstruktorin (kuva 10).
 
 
-![Kuva10](https://user-images.githubusercontent.com/55107172/144237256-0a31809b-7330-40a8-9ae4-e03b973b80ef.png)
+![1playerstate](https://user-images.githubusercontent.com/55107172/145387751-e4ca2528-0087-4e58-aeb8-9c14d1c70e30.PNG)
 Kuva 10. PlayerStateBase.h
 
 
-Seuraavaksi luodaan osoitin ASC-komponenttiin (kuva 11).
+Seuraavaksi implementoidaan IAbilitySystemInterface ja luodaan osoitin luomaamme ASC-komponenttiin (kuva 11).
 
 
-![Kuva11](https://user-images.githubusercontent.com/55107172/144237244-1ad83dec-e8ca-46b3-9d5e-73576a411ffc.png)
+![implementpointertoasc](https://user-images.githubusercontent.com/55107172/145388255-ae01f366-30ad-45bf-a535-6337183d0232.PNG)
 Kuva 11. PlayerStateBase.h
 
-
-Funktio, joka palauttaa luokan ASC:n on myös pakollinen (kuva 12, kuva 13).
+!!!!!!!!!!!!! Funktio, joka palauttaa luokan ASC:n on myös pakollinen (kuva 12, kuva 13).
 
 
 ![Kuva12](https://user-images.githubusercontent.com/55107172/144237230-80ffbff4-2db0-4314-b85e-0950921f8605.png)
 Kuva 12. PlayerStateBase.h
 
 ![Kuva13](https://user-images.githubusercontent.com/55107172/144237215-2c8be9a2-ffb3-4ee3-900d-fe49f79cc371.png)
-Kuva 13. PlayerStateBase.cpp
+Kuva 13. PlayerStateBase.cpp !!!!!!!!
 
 
 Koska ASC on komponentti, pitää se luoda konstruktorissa.
