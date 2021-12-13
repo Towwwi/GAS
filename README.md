@@ -306,6 +306,9 @@ Kuva 33. Attribuuttien asettaminen.
 
 HeroCharacter-luokassa sijaitsevassa PosessedBy-funktion toteutuksessa, määritellään AttributeSet, kutsutaan InitializeAttributes-funktiota sekä laitetaan HeroCharacter-luokan elämäpisteet blueprintissä määriteltävään maksimielämäpiste määrään (Kuva 34). 
 
+![27](https://user-images.githubusercontent.com/55107172/145852433-6e5cb2ac-45a4-4431-baa8-45a4b5a7dc28.PNG)
+Kuva 34. HeroCharacter.cpp // Lisätään PosessedBy-funktioon tarvittavat muutokset.
+
 ## 7	Lähdeluettelo
 
 
