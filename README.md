@@ -228,19 +228,19 @@ Kuva 17. Character-luokassa suoritettava ASC:n alustus OnRep_PlayerState-funktio
 
 Nyt pelihahmolla on käytössä ASC ja se on valmis GAS:n työkalujen käyttöön.
 
-### 3.2	AttributeSet lisäys
+### 3.2	AttributeSet:in lisäys
 
 Haluamme aluksi hahmoille käyttöön ainakin manan ja elämäpisteet. Tämä tarkoittaa että hahmot tarvitsevat sen nimiset attribuutit ja attribuutit sijaitsevat AttributeSet-luokassa. Luodaan ensimmäisenä AttributeSet C++-luokka (Kuva18). Lisäksi kannattaa luoda attribuutti vahingon tuottamiselle, esimerkiksi Damage(vahinko).
 
 ![attr1](https://user-images.githubusercontent.com/55107172/144851867-a03b46d7-13fb-4711-ad9e-72ab1f67c1ad.JPG)
 Kuva 18. Luodaan uusi AttributeSet C++-luokka.
 
-AttributeSettiin kannattaa aluksi määritellä pari valmista macroa (Kuva19). Tämä automaattisesti luo "Getter" ja "Setter"-functiot attribuuteille.
+1. AttributeSettiin kannattaa aluksi määritellä pari valmista macroa (Kuva19). Tämä automaattisesti luo "Getter" ja "Setter"-functiot attribuuteille.
 
 ![attribtemacro](https://user-images.githubusercontent.com/55107172/145461516-ec3d3d81-2a28-4baf-9a5b-49767926c87e.PNG)
 Kuva 19.  AttributeSetBase.h Macrot
 
-Seuraavaksi ylikirjoitetaan kolme funktiota (Kuva 20):
+2. Seuraavaksi ylikirjoitetaan kolme funktiota (Kuva 20):
 
 - PreAttributeChange
 - PostGameplayEffectExecute
@@ -249,7 +249,7 @@ Seuraavaksi ylikirjoitetaan kolme funktiota (Kuva 20):
 ![attributeoverride](https://user-images.githubusercontent.com/55107172/145462890-57bf06b6-d6bb-4900-b0f8-adfff752c000.PNG)
 Kuva 20. Ylikirjoitetaan funktiot joita AttributeSet hyödyntää.
 
-Nyt luodaan ensimmäinen attribuutti: Health(elämäpisteet) sekä sille maksimi arvo jota pystyy myös muokkaamaan efekteillä, eli MaxHealth(Maksimielämäpisteet) (Kuva 21). Moninpeliä luodessa attribuuteille pitää tehdä myös OnRep-funktiot (Kuva 22). Jokainen attribuutti luodaan samalla tyylillä, ohjelmoijan pitää vain miettiä kuvaavat nimet attribuuteille, tarvitseeko ne maksimi arvoa ja pitääkö ne replikoida. Damage attribuutilla demossani ei ole maksimi arvoa ja se on olemassa vain serverillä, joten sitä ei tarvitse replikoida. Damage-attribuutti luodaan tässä tapauksessa yksinkertaisemmin (kuva 23).
+3. Nyt luodaan ensimmäinen attribuutti: Health(elämäpisteet) sekä sille maksimi arvo jota pystyy myös muokkaamaan efekteillä, eli MaxHealth(Maksimielämäpisteet) (Kuva 21). Moninpeliä luodessa attribuuteille pitää tehdä myös OnRep-funktiot (Kuva 22). Jokainen attribuutti luodaan samalla tyylillä, ohjelmoijan pitää vain miettiä kuvaavat nimet attribuuteille, tarvitseeko ne maksimi arvoa ja pitääkö ne replikoida. Damage attribuutilla demossani ei ole maksimi arvoa ja se on olemassa vain serverillä, joten sitä ei tarvitse replikoida. Damage-attribuutti luodaan tässä tapauksessa yksinkertaisemmin (kuva 23).
 
 ![heathlandmaxhp](https://user-images.githubusercontent.com/55107172/145462935-b4757a3f-41f2-4847-b732-59546f63f61d.PNG)
 Kuva 21. Health ja MaxHealth attribuutit.
@@ -259,6 +259,48 @@ Kuva 22. OnRep-funktiot.
 
 ![damageattribute](https://user-images.githubusercontent.com/55107172/145462972-9324945a-b8d7-455c-9cf3-7b9677fd2c1b.PNG)
 Kuva 23. Damage-attribuutti.
+
+4. AttributeSetBase.h-tiedostosta löytyy nyt tarvittavat funktiot. Seuraavaksi AttributeSetBase.cpp tiedostossa pitää määritellä, mitä funktiot tekevät. Tällä hetkellä täytyy vain lisätä luodut attribuutit GetLifetimeReplicatedProps funktion sisään (Kuva 24) sekä täyttää OnRep-funtiot hyödyntäen luotua macroa (Kuva 25). Nämä kummatkin funktiot liittyvät moninpeliominaisuuksiin, joten käytän jokaisessa attribuutissa samoja määreitä. Tavoitellun demon kannalta ei ole tarvetta käyttää muita määreitä.
+
+![16](https://user-images.githubusercontent.com/55107172/145827361-65c9d7a6-940c-495d-a351-d00f392f28a8.PNG)
+Kuva 24. AttributeSetBase.cpp // Jokainen replikoitava attribuutti täytyy lisätä tähän funktioon.
+
+![17](https://user-images.githubusercontent.com/55107172/145827374-f33294d7-4e5f-4027-9e93-91e3b9f01be7.PNG)
+Kuva 25. AttributeSetBase.cpp // Jokainen replikoitava attribuutti tarvitsee samanlaisen funktion.
+
+### 3.3 AttributeSet:in antaminen
+
+AttributeSet on luotu ja se sisältää attribuutteja. Attribuutteja ei tietenkään voi vielä käyttää koska ei ole yhtään hahmoa, jolla AttributeSet olisi käytössä. Attribuutit lisätään InstantGameplayEffect-efektillä, Epic Gamesin suosittelemalla toteutuksella (Kuva 26).
+
+![20](https://user-images.githubusercontent.com/55107172/145834686-c434ee9d-4262-4035-b109-24f27df104ec.PNG)
+kuva 26.
+
+Luodaan PlayerStateBase-luokkaan osoitin ja Getter-funktio samalla tavalla kuin ASC:lle (Kuva 27).
+
+![21](https://user-images.githubusercontent.com/55107172/145834699-dc40b5b1-2761-4457-a9e8-0b0aaa48e0fa.PNG)
+Kuva 27.
+
+Useasti muuttuville attribuuteille kannattaa luoda myös Getter-funktiot PlayerState-luokkaan esimerkiksi, "float GetHealth() const;" (Kuva 28).
+
+![22](https://user-images.githubusercontent.com/55107172/145835476-5372ecf5-d91a-4b92-a1a6-bc612565d4e6.PNG)
+Kuva 28.
+
+AttributeSet:istä kannattaa tehdä myös SubObject PlayerState-luokan konstruktorissa(Kuva 29).
+
+![23](https://user-images.githubusercontent.com/55107172/145836165-a32e3e82-e1d1-4a69-90a7-001944c31761.PNG)
+Kuva 29. PlayerState.cpp // Konstruktorissa luotu AttributeSet-SubObject.
+
+InitializeAttributes-funktio luodaan CharacterBase-luokkaan. Maailman kaikki liikkuvat olennot periytyvät Character-Base-luokasta ja nekin tarvitsevat attribuutteja, mahdollisesti kokonaan uuden AttributeSet luokan. CharacterBase-luokkaan tulee myös TweakObjectPtr-osoitin AttributeSetBase-luokkaan, SubClass-UGameplayEffect-luokasta ja Setter-funktiot elämäpisteille ja manalle. Setter-funktioita käytetään vain hahmon syntyessä (Kuva 30).
+
+![image](https://user-images.githubusercontent.com/55107172/145840690-1ddc63d3-76e5-4fc6-841c-67f6b4722bc3.png)
+Kuva 30. CharacterBase.h // Tarvittavat lisäykset CharacterBase-luokkaan.
+
+InitializeAttributes-funktiossa tarkistetaan onko Character-luokalla käytössä toimiva ASC-komponentti ja DefaultAttributes-luokka. Jos DefaultAttributes-luokka on käytässä, attribuutit voidaan asettaa (Kuva 31).
+
+![24](https://user-images.githubusercontent.com/55107172/145841608-904877b7-cb1d-48e7-8489-5322de2db754.PNG)
+Kuva 31. Attribuuttien asettaminen.
+
+
 
 ## 7	Lähdeluettelo
 
