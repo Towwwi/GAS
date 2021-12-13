@@ -290,17 +290,21 @@ AttributeSet:istä kannattaa tehdä myös SubObject PlayerState-luokan konstrukt
 ![23](https://user-images.githubusercontent.com/55107172/145836165-a32e3e82-e1d1-4a69-90a7-001944c31761.PNG)
 Kuva 29. PlayerState.cpp // Konstruktorissa luotu AttributeSet-SubObject.
 
-InitializeAttributes-funktio luodaan CharacterBase-luokkaan. Maailman kaikki liikkuvat olennot periytyvät Character-Base-luokasta ja nekin tarvitsevat attribuutteja, mahdollisesti kokonaan uuden AttributeSet luokan. CharacterBase-luokkaan tulee myös TweakObjectPtr-osoitin AttributeSetBase-luokkaan, SubClass-UGameplayEffect-luokasta ja Setter-funktiot elämäpisteille ja manalle. Setter-funktioita käytetään vain hahmon syntyessä (Kuva 30).
+InitializeAttributes-funktio luodaan CharacterBase-luokkaan. Maailman kaikki liikkuvat olennot periytyvät Character-Base-luokasta ja nekin tarvitsevat attribuutteja, mahdollisesti kokonaan uuden AttributeSet luokan. CharacterBase-luokkaan tulee myös TweakObjectPtr-osoitin AttributeSetBase-luokkaan, SubClass-UGameplayEffect-luokasta ja Setter-funktiot elämäpisteille ja manalle. Setter-funktioita käytetään vain hahmon syntyessä (Kuva 30). CharacterBase-luokkaan luodaan myös Getter-funktiot(Kuva 31), joita aliluokat hyödyntävä esimerkiksi, "float GetHealth() const;".
 
 ![image](https://user-images.githubusercontent.com/55107172/145840690-1ddc63d3-76e5-4fc6-841c-67f6b4722bc3.png)
 Kuva 30. CharacterBase.h // Tarvittavat lisäykset CharacterBase-luokkaan.
 
-InitializeAttributes-funktiossa tarkistetaan onko Character-luokalla käytössä toimiva ASC-komponentti ja DefaultAttributes-luokka. Jos DefaultAttributes-luokka on käytässä, attribuutit voidaan asettaa (Kuva 31).
+
+![26](https://user-images.githubusercontent.com/55107172/145849618-208a8afd-aedc-475b-84e7-449aa5dbd118.PNG)
+Kuva 31. CharacterBase.cpp // Getterit.
+
+InitializeAttributes-funktiossa tarkistetaan onko Character-luokalla käytössä toimiva ASC-komponentti ja DefaultAttributes-luokka. Jos DefaultAttributes-luokka on käytässä, attribuutit voidaan asettaa (Kuva 33).
 
 ![24](https://user-images.githubusercontent.com/55107172/145841608-904877b7-cb1d-48e7-8489-5322de2db754.PNG)
-Kuva 31. Attribuuttien asettaminen.
+Kuva 33. Attribuuttien asettaminen.
 
-
+HeroCharacter-luokassa sijaitsevassa PosessedBy-funktion toteutuksessa, määritellään AttributeSet, kutsutaan InitializeAttributes-funktiota sekä laitetaan HeroCharacter-luokan elämäpisteet blueprintissä määriteltävään maksimielämäpiste määrään (Kuva 34). 
 
 ## 7	Lähdeluettelo
 
