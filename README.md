@@ -329,6 +329,71 @@ Nyt pelin käynnistäessä voi kirjoittaa konsoliin "showdebug abilitysystem", j
 ![30](https://user-images.githubusercontent.com/55107172/146147822-3c03155e-6978-46e6-80b2-b9b5c3ea0cb9.PNG)
 Kuva 38. Pelinsisäinen GAS-debugger.
 
+### 3.3 Attribuuttien muuttaminen pelin sisällä
+
+Tällä hetkellä projektissa on käytössä attribuutteja, mutta mikään ei muuta niitä. Tavoitteena on luoda alusta, jossa seistäessä pelihahmo ottaa vahinkoa joka sekuntti. Actor-tyyppinen Blueprint on sopivat tälläiselle alustalle. Actor tarvitsee myös BoxCollision-alueen, joka tarkistaa mitä alustaan osuu sekä Plane-muodon visualisoimaan aluetta.
+
+Luodaan myös uusi GameplayEffect-Blueprint, GE_DamageTileDamage. Tässä efektissä määritellään mitä muokkauksia attribuutteihin tulee.
+
+1. Vahingon pitää tapahtua joka sekuntti ja serverillä (Kuva 39).
+
+![40](https://user-images.githubusercontent.com/55107172/146164170-5a54dae2-8d6e-4fed-9faf-a345b3b62ec6.PNG)
+Kuva 39.
+
+2. Tarkistetaan osuuko alueeseen HeroCharacter (Kuva 40).
+
+![41](https://user-images.githubusercontent.com/55107172/146164236-759c2788-052f-4550-a322-187d423d28c7.PNG)
+Kuva 40.
+
+3. Tarkistetaan että ASC on käytössä ja tehdään siitä muuttuja selkeyden vuoksi (Kuva 41).
+
+![42](https://user-images.githubusercontent.com/55107172/146164337-758c578f-fb07-4392-835e-0dfc42c5c484.PNG)
+Kuva 41.
+
+4. Luodaan ja annetaan ASC:lle DamageTile.Damage-tunniste (Kuva 42).
+
+![tiledamagetag](https://user-images.githubusercontent.com/55107172/146164812-81352f4c-5cff-4f70-93eb-cde13425bc62.PNG)
+Kuva 42.
+
+5. Otetaan muistiin tietoa ASC:sta sekä valitaan haluttu efekti-luokka (Kuva 43).
+
+![43](https://user-images.githubusercontent.com/55107172/146164944-a77d2d6e-2c5b-40ee-96ea-85518456f9e9.PNG)
+Kuva 43.
+
+6. Asetetaan efektin määrittely ASC:en, kutsutaan CharacterBase-luokan GetHealth-funktiota ja tulostetaan sen arvo näytölle (Kuva 44).
+
+![44](https://user-images.githubusercontent.com/55107172/146164978-86af925f-cd25-46cb-a2bb-d8dbaf2d9992.PNG)
+Kuva 44.
+
+7. GE_DamageTileDamage-Blueprintissä lisätään Health-attribuuttiin -10. Vähennystä valikosta ei löydy, siksi efekteissä lisätään miinusmerkkinen luku (Kuva 45).
+
+![damage](https://user-images.githubusercontent.com/55107172/146166102-ef1f9f6e-22bc-4ba5-8896-8bc466ca9924.PNG)
+Kuva 45.
+
+Nyt pelihahmon attribuutti vähenee joka sekuntti, jos se on alueella (Kuva 46). Pelihahmolle ei tällä hetkellä ole määritelty minimiarvoa tai kuolemista, joten elämpisteet menevät negatiivisen puolelle loputtomasti.
+
+![hp](https://user-images.githubusercontent.com/55107172/146166370-e9fa02aa-9c22-4bfe-bf40-da8afb76e2f2.PNG)
+Kuva 46.
+
+
+//////////////////////////////// kykyjen luominen ja antaminen
+
+### 4.1 Pelihahmon kykyjen aktivoiminen
+
+Kyvyistä ja iskuista ei ole paljoa iloa, jos niitä ei pysty aktivoimaan. Luodaan actorille Plane-alusta ja BoxCollision-alue.
+
+
+
+1. Luodaan GamePlayAbilityBase niminen C++-luokka, joka periytyy GameplayAbility-luokasta (Kuva 47). Tähän luokkaan lisätään myöhemmin tarvittavia enumeraatioita, ominaisuuksia ja tunnisteita. C++-luokasta tehdään Blueprint, josta kaikki pelin kyvyt periytyvät.
+
+Kuva 47. GameplayAbilityBase C++-luokka.
+
+
+
+### 4.2 Ensimmäinen pelihahmon kyky
+
+
+
 ## 7	Lähdeluettelo
 
 
