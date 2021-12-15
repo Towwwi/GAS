@@ -309,6 +309,26 @@ HeroCharacter-luokassa sijaitsevassa PosessedBy-funktion toteutuksessa, määrit
 ![27](https://user-images.githubusercontent.com/55107172/145852433-6e5cb2ac-45a4-4431-baa8-45a4b5a7dc28.PNG)
 Kuva 34. HeroCharacter.cpp // Lisätään PosessedBy-funktioon tarvittavat muutokset.
 
+AttributeSetin c++-ohjelmointi osuus on nyt valmis ja tässä vaiheessa voi luoda pelihahmon C++-luokasta ja GameMode-luokasta blueprintit ja pelihahmo projektiin käytettäväksi. Kun HeroCharacter-luokasta on tehty blueprint, sille pitää antaa efekti joka ottaa AttributeSetin käyttöön ja antaa attribuuttien maksimi arvot (Kuva 35). Itse nimeän kaikki efektit tähän tyyliin: GE_EfektinNimi.
+
+![18](https://user-images.githubusercontent.com/55107172/146144991-17b2445b-9bdc-487b-9084-ff47b41ee037.PNG)
+Kuva 35. GE_HeroAttributes.
+
+Efektin sisällä lisätään kaksi muunninta, jotka ovat välittömiä. Nämä muuntimet ylikirjoittaa elämäpisteiden ja manan maksimi arvot (Kuva 36). HeroCharacter C++-luokassa OnPosessed-funktio laittaa attribuutit maksimiarvoon.
+
+![28](https://user-images.githubusercontent.com/55107172/146146339-4e32d6ec-2840-4155-86c9-822a28b8cacf.PNG)
+Kuva 36. GE_HeroAttributes // Instant-modifiers.
+
+Viimeiseksi HeroCharacter-blueprintissä valitaan käyttöön juuri luomamme efekti (Kuva 37).
+
+![29](https://user-images.githubusercontent.com/55107172/146146941-bf22882e-c5e6-44d2-ac87-08e19ad0253f.PNG)
+Kuva 37. BP_HeroCharacter.
+
+Nyt pelin käynnistäessä voi kirjoittaa konsoliin "showdebug abilitysystem", jolloin näkee pelihahmon attribuutit ja niiden arvot. Minun tapauksessani elämäpisteet, mana ja niiden maksimi määrät ovat sata. Damage-attribuutti on 0, koska sille ei ole määritelty mitään arvoa (Kuva 38).
+
+![30](https://user-images.githubusercontent.com/55107172/146147822-3c03155e-6978-46e6-80b2-b9b5c3ea0cb9.PNG)
+Kuva 38. Pelinsisäinen GAS-debugger.
+
 ## 7	Lähdeluettelo
 
 
