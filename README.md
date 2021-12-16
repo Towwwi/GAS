@@ -382,13 +382,27 @@ Kuva 46.
 
 Kyvyistä ja iskuista ei ole paljoa iloa, jos niitä ei pysty aktivoimaan. Luodaan actorille Plane-alusta ja BoxCollision-alue.
 
+1. Luodaan GamePlayAbilityBase niminen C++-luokka, joka periytyy GameplayAbility-luokasta. Tähän luokkaan lisätään tarvittavia enumeraatioita, ominaisuuksia ja tunnisteita. C++-luokasta tehdään Blueprint, josta kaikki pelin kyvyt periytyvät.
 
+2. Kaikilla Unreal Engine projekteilla on Header-tiedosto nimeltä ProjektinNimi.h. Header-tiedostoon luodaan enumeraatio-luokka. Kaikki kyvyt tullaan lisäämään Input-asetuksiin Unreal Enginessä ja siellä niille valitaan sopiva näppäin. Header-tiedostoon lisättyjen enumeraatioiden nimet täytyy olla samat kuin Unreal Enginen Input-asetuksissa (Kuva 47, 48). 
 
-1. Luodaan GamePlayAbilityBase niminen C++-luokka, joka periytyy GameplayAbility-luokasta (Kuva 47). Tähän luokkaan lisätään myöhemmin tarvittavia enumeraatioita, ominaisuuksia ja tunnisteita. C++-luokasta tehdään Blueprint, josta kaikki pelin kyvyt periytyvät.
+![45](https://user-images.githubusercontent.com/55107172/146435077-d70fb21b-2c2b-4c38-9a17-9e5bb2a4b0d1.PNG)
+Kuva 47. ProjektinNimi.h // Enumeraatio-luokka
 
-Kuva 47. GameplayAbilityBase C++-luokka.
+![46](https://user-images.githubusercontent.com/55107172/146435086-cc3063b0-458b-4089-88a8-948042dfbd0b.PNG)
+Kuva 48. Unreal enginessä lisätyt Input-asetukset.
 
+Confirm ja Cancel-enumeraatiot ovat kykyjä varten, missä esimerkiksi täytyy valita iskun tippumispaikka tai peruuttaa sen valitsemisen. None-enumeraatio on kyvyille joita pelaajan ei tarvitse käynnistää näppäimellä.
 
+3. Jokaiselle abilitylle tulee olemaan oma näppäimensä joten se pitää saada helposti määriteltyä, tämä tapahtuu GameplayAbilityBase-luokassa. AbilityBase-luokka tarvitsee konstruktorin sekä kaksi enumeraatiota, joidenka arvon voi valita Unreal Enginessä. !!!! SELITÄ TÄHÄN MITÄ ENUMERAATIOT TEKEE !!!!!!!!!!!!. Luokkaan kannattaa myös lisätä boolean-attribuutti joka määrittelee, pitääkö kyvyn aktivoitua heti kun pelihahmo saa sen käyttöönsä(Kuva 49).
+
+![47](https://user-images.githubusercontent.com/55107172/146437760-b29f78db-4ef3-434c-91a5-ffb17e11a8a3.PNG)
+Kuva 49. GameplayAbilityBase.h
+
+Konstruktorin sisällä voi määritelle tunnisteita jotka ovat jokaiselle kyvyille vakioita. Jos pelihahmo on kuollut tai taintunut, se voisi saada kuvanmukaiset tunnisteet (Kuva 50). Konstruktorissa määritellään myös kyvyn ilmentymäkäytäntö.
+
+![49](https://user-images.githubusercontent.com/55107172/146438359-928171e3-2ca7-4621-82e5-688337459c89.PNG)
+Kuva 50. GameplayAbilityBase.cpp
 
 ### 4.2 Ensimmäinen pelihahmon kyky
 
