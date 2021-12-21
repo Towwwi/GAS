@@ -409,11 +409,10 @@ Kuva 50. GameplayAbilityBase.cpp
 Jotta pelihahmo pystyy käyttämään kykyjä, pitää kyvyt ensiksi antaa hahmolle. Olipa kyseessä pelaajan hahmo tai tekoälyhahmo, ne eivät pysty kykyjä käynnistämään ilman että ne omistavat kyvyn. Koska tekoäly sekä pelaajan hahmot tarvitsevat kummatkin kykyjä, CharacterBase-luokassa täytyy olla funktio jolla annetaan kyky.
 
 1. 
-< 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
-	TArray<TSubclassOf<class UGameplayAbilityBase>> CharacterAbilities;
-
-/>
+```
+UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
+TArray<TSubclassOf<class UGameplayAbilityBase>> CharacterAbilities;
+```
 
 
 
