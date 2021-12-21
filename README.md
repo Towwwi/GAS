@@ -406,16 +406,70 @@ Kuva 50. GameplayAbilityBase.cpp
 
 ### 4.2 Kykyjen antaminen hahmolle
 
-Jotta pelihahmo pystyy käyttämään kykyjä, pitää kyvyt ensiksi antaa hahmolle. Olipa kyseessä pelaajan hahmo tai tekoälyhahmo, ne eivät pysty kykyjä käynnistämään ilman että ne omistavat kyvyn. Koska tekoäly sekä pelaajan hahmot tarvitsevat kummatkin kykyjä, CharacterBase-luokassa täytyy olla funktio jolla annetaan kyky.
+Jotta pelihahmo pystyy käyttämään kykyjä, pitää kyvyt ensiksi antaa hahmolle. Olipa kyseessä pelaajan hahmo tai tekoälyhahmo, ne eivät pysty kykyjä käynnistämään ilman että ne omistavat kyvyn. Koska tekoäly sekä pelaajan hahmot tarvitsevat kummatkin kykyjä, CharacterBase-luokassa täytyy olla funktio jolla kyky annetaan.
 
-1. 
+1. Ensiksi lisätään ASCBase-luokkaan kaksi boolean-muuttujaa. Muuttujilla tarkistetaan onko hahmo saanut jo syntyessä annettavat kyvyt sekä mahdolliset syntyessä tapahtuvat efektit.
+
+```c++
+	bool CharacterAbilitiesGiven = false;
+	bool StartupEffectsApplied = false;
+```
+
+2. Luodaan CharacterBase-luokkaan taulukko joka sisältää GameplayAbilityBase-luokan kykyjä.
+
+```c++
+UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
+TArray<TSubclassOf<class UGameplayAbilityBase>> CharacterAbilities;
+```
+3. Tässä vaiheessa voidaan myös määrittää kyvyille taso. Tällä hetkellä määritän sen arvoksi aina yksi.
+
+```c++
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	virtual int32 GetAbilityLevel(EAbilityInputID AbilityID) const;
+```
+
+```c++
+int32 ACharacterBase::GetAbilityLevel(EAbilityInputID AbilityID) const
+{
+	return 1;
+}
+```
+
+```c++
+int32 ACharacterBase::GetAbilityLevel(EAbilityInputID AbilityID) const
+{
+	return 1;
+}
+```
+
+4. Luodaan funktio joka käy läpi luodun CharacterAbilities-taulukon ja antaa kyvyn hahmon ASC:lle.
+
 ```
 UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
 TArray<TSubclassOf<class UGameplayAbilityBase>> CharacterAbilities;
 ```
+	virtual void AddCharacterAbilities();
+```
+// Grant abilities on server
+void ACharacterBase::AddCharacterAbilities()
+{
 
+	if (GetLocalRole() != ROLE_Authority || !AbilitySystemComponent.IsValid() || AbilitySystemComponent->CharacterAbilitiesGiven)
+	{
+		return;
+	}
 
+	for (TSubclassOf<UGameplayAbilityBase>& StartupAbility : CharacterAbilities)
+	{
+		AbilitySystemComponent->GiveAbility(
+			FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID), static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+	}
 
+	AbilitySystemComponent->CharacterAbilitiesGiven = true;
+}
+
+```
+5.
 
 ## 7	Lähdeluettelo
 
