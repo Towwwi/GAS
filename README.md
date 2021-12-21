@@ -424,15 +424,8 @@ TArray<TSubclassOf<class UGameplayAbilityBase>> CharacterAbilities;
 3. Tässä vaiheessa voidaan myös määrittää kyvyille taso. Tällä hetkellä määritän sen arvoksi aina yksi.
 
 ```c++
-	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	virtual int32 GetAbilityLevel(EAbilityInputID AbilityID) const;
-```
-
-```c++
-int32 ACharacterBase::GetAbilityLevel(EAbilityInputID AbilityID) const
-{
-	return 1;
-}
+UFUNCTION(BlueprintCallable, Category = "Abilities")
+virtual int32 GetAbilityLevel(EAbilityInputID AbilityID) const;
 ```
 
 ```c++
@@ -444,12 +437,15 @@ int32 ACharacterBase::GetAbilityLevel(EAbilityInputID AbilityID) const
 
 4. Luodaan funktio joka käy läpi luodun CharacterAbilities-taulukon ja antaa kyvyn hahmon ASC:lle.
 
-```
+```c++
 UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
 TArray<TSubclassOf<class UGameplayAbilityBase>> CharacterAbilities;
 ```
+```c++
 	virtual void AddCharacterAbilities();
 ```
+
+```c++
 // Grant abilities on server
 void ACharacterBase::AddCharacterAbilities()
 {
@@ -462,14 +458,17 @@ void ACharacterBase::AddCharacterAbilities()
 	for (TSubclassOf<UGameplayAbilityBase>& StartupAbility : CharacterAbilities)
 	{
 		AbilitySystemComponent->GiveAbility(
-			FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID), static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), this));
+		FGameplayAbilitySpec(StartupAbility, GetAbilityLevel(StartupAbility.GetDefaultObject()->AbilityID), static_cast<int32>(StartupAbility.GetDefaultObject()-			>AbilityInputID), this));
 	}
 
 	AbilitySystemComponent->CharacterAbilitiesGiven = true;
 }
 
 ```
-5.
+5. Nyt HeroCharacter-Blueprintissä pystyy määrittelemään, mitkä kyvyt hahmolle annetaan syntyessä (Kuva 51). Tällä hetkellä ei kuitenkaan vielä ole luotu kykyä, minkä hahmo pystyisi aktivoimaan.
+
+![50](https://user-images.githubusercontent.com/55107172/146950827-27043110-9c36-4648-997c-e4294dc79711.PNG)
+Kuva 51. BP_HeroCharacter // Kykyjen lisääminen hahmolle Blueprintissä
 
 ## 7	Lähdeluettelo
 
