@@ -404,7 +404,17 @@ Konstruktorin sisällä voi määritelle tunnisteita jotka ovat jokaiselle kyvyi
 ![49](https://user-images.githubusercontent.com/55107172/146438359-928171e3-2ca7-4621-82e5-688337459c89.PNG)
 Kuva 50. GameplayAbilityBase.cpp
 
-### 4.2 Ensimmäinen pelihahmon kyky
+### 4.2 Kykyjen antaminen hahmolle
+
+Jotta pelihahmo pystyy käyttämään kykyjä, pitää kyvyt ensiksi antaa hahmolle. Olipa kyseessä pelaajan hahmo tai tekoälyhahmo, ne eivät pysty kykyjä käynnistämään ilman että ne omistavat kyvyn. Koska tekoäly sekä pelaajan hahmot tarvitsevat kummatkin kykyjä, CharacterBase-luokassa täytyy olla funktio jolla annetaan kyky.
+
+1. 
+< 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<class UGameplayAbilityBase>> CharacterAbilities;
+
+/>
+
 
 
 
