@@ -480,6 +480,12 @@ void ACharacterBase::AddCharacterAbilities()
 ![50](https://user-images.githubusercontent.com/55107172/146950827-27043110-9c36-4648-997c-e4294dc79711.PNG)
 Kuva 51. BP_HeroCharacter // Kykyjen lisääminen hahmolle Blueprintissä
 
+### Ensimmäinen kyky
+
+![51](https://user-images.githubusercontent.com/55107172/147260728-580a1c6c-ee65-4509-be60-64d5eb494bca.PNG)
+
+![52](https://user-images.githubusercontent.com/55107172/147260740-ec0fc574-2064-4c59-953f-2b8834435c3f.PNG)
+
 ## 7	Lähdeluettelo
 
 
