@@ -486,6 +486,33 @@ Kuva 51. BP_HeroCharacter // Kykyjen lisääminen hahmolle Blueprintissä
 
 ![52](https://user-images.githubusercontent.com/55107172/147260740-ec0fc574-2064-4c59-953f-2b8834435c3f.PNG)
 
+2. Tällä hetkellä GameplayAbilityBase-luokka on riittävä käytettäväksi ja nyt täytyy luoda luokka kyvylle, joka periytyy GameplayAbilityBase-luokasta. Kyvyt nimetään yleensä tyylillä "GA_KyvynNimi" ja efektit "GE_EfektinNimi". GA tarkoittaa GameplayAbility ja GE GameplayEffect.
+
+3. Kyvyissä on aina kaksi valmista Event-funktiota käytettävänä. ActivateAbility-funktioon määritellään mitä tapahtuu kun kyky aktivoidaan ja OnEndAbility-funktiossa voi määritellä mitä tapahtuu kun kyky lähtee pois käytöstä tai loppuu. Kyvyn alussa voi kutsua äsken luomaamme GetPlayerCharacter-funktiota ja tarkistaa CommitAbility-funktiolla voiko kykyä käynnistää, jos ei niin kyky on lopetettava (Kuva 54).
+
+![53](https://user-images.githubusercontent.com/55107172/147578006-6401a886-7273-4e72-85a0-76947365f4c8.PNG)
+Kuva 54. GA_Fireball
+
+4. Seuraavaksi määritellään minkä animaation kyvyn käyttäjä toteuttaa. PlayMontageAndWait-funktiolla toteutetaan animaation käynnistys ja siinnä myös määrittellään mitä sen jälkeen tapahtuu. Kykyjen käyttämisessä on tärkeä tietää milloin kyky lopetetaan ja millon sitä ei saa vielä lopettaa. Kyky ei saa jäädä missään tapauksessa elämään, vaan sen on aina sammuttava jos sitä haluaa käyttää uusiksi. Suurimmissa osissa tämä tarkoittaa että kaikki PlayMontageAndWait-funktion OnTapahtuma-funktiot päätetään EndAbility-funktioon (Kuva 55).
+
+5. Tässä kyvyssä synnytetään projektiili, joka on erillinen luokkansa. Projektiili luodaan SpawnActorFromClass-funktiolla. Funktiossa määritellään luotava luokka, miten päin se syntyy maailmaan, törmäys-asetuksia sekä omistaja ja Instigator-luokka. Projektiili luodaan kohdassa kuusi joten Class-funktion voi vielä jättää tyhjäksi. Omistaja ja Instigator-luokka on GetPlayerCharacter-funktiolla saatu HeroCharacter-luokka. HeroCharacter-luokasta voi myös ottaa GetActorTransform-funktiolla arvon projektiilin SpawnTransform-muuttujaan (Kuva 55).
+
+![54](https://user-images.githubusercontent.com/55107172/147578028-d36d6210-e65a-4428-a4ac-ef7f9afdc99a.PNG)
+Kuva 55. GA_Fireball // Toistetaan animaatio ja synnytetään projektiili.
+
+6. Nyt on hyvä aika luoda alustava projektiili-Blueprint. Tarkoituksena projektiililla on lentää määritelty matka ja tarkastaa mihin se osuu. Osuttuaan se lähettää tapahtuman EvenTag-muodossa projektiilin Instigator-luokalle, eli tässä tapauksessa HeroCharacter-luokalle. Luodaan siis uusi Actor-Blueprint, esimerkiksi PROJ_Fireball. Myöhemmin luodaan vielä ProjectileBase-Blueprint, josta kaikki projektiilit periytyvät. Projektiilille luodaan Sphere-muoto, Box/SphereCollision-törmäysmuoto ja ProjectileMovement-komponentti (Kuva 56).
+
+![59](https://user-images.githubusercontent.com/55107172/147578239-0f09d576-95b6-4b65-8dce-41087a87bde9.PNG)
+Kuva 56. PROJ_Fireball
+
+![60](https://user-images.githubusercontent.com/55107172/147578260-66106176-80b6-4734-b88a-93cf839927f6.PNG)
+
+
+7. Määritellään BeginPlay-tapahtumassa miten pitkään projektiili kuuluu lentää ilmassa, ennen kuin se katoaa (Kuva 57).
+
+
+Kuva 57. PROJ_Fireball // Projektiilin lentomatka määritetään näin.
+
 ## 7	Lähdeluettelo
 
 
