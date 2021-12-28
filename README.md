@@ -530,6 +530,12 @@ Kuva 60. GA_Fireball
 
 
 
+![63](https://user-images.githubusercontent.com/55107172/147585316-c4b1e933-0edc-4a0b-8f3a-cbcb58739f55.PNG)
+Kuva 61. Luodun GameplayAbility-luokan idea.
+
+![64](https://user-images.githubusercontent.com/55107172/147585322-7f0965e9-5d24-401b-a80b-99b4ae68b5fb.PNG)
+Kuva 62. Luodun Projectile-luokan idea.
+
 ## 7	Lähdeluettelo
 
 
