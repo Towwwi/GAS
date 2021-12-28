@@ -500,18 +500,35 @@ Kuva 54. GA_Fireball
 ![54](https://user-images.githubusercontent.com/55107172/147578028-d36d6210-e65a-4428-a4ac-ef7f9afdc99a.PNG)
 Kuva 55. GA_Fireball // Toistetaan animaatio ja synnytetään projektiili.
 
-6. Nyt on hyvä aika luoda alustava projektiili-Blueprint. Tarkoituksena projektiililla on lentää määritelty matka ja tarkastaa mihin se osuu. Osuttuaan se lähettää tapahtuman EvenTag-muodossa projektiilin Instigator-luokalle, eli tässä tapauksessa HeroCharacter-luokalle. Luodaan siis uusi Actor-Blueprint, esimerkiksi PROJ_Fireball. Myöhemmin luodaan vielä ProjectileBase-Blueprint, josta kaikki projektiilit periytyvät. Projektiilille luodaan Sphere-muoto, Box/SphereCollision-törmäysmuoto ja ProjectileMovement-komponentti (Kuva 56).
+6. Nyt on hyvä aika luoda alustava projektiili-Blueprint. Tarkoituksena projektiililla on lentää määritelty matka ja tarkastaa mihin se osuu. Osuttuaan se lähettää tapahtuman EvenTag-muodossa projektiilin Instigator-luokalle, eli tässä tapauksessa HeroCharacter-luokalle. Luodaan siis uusi Actor-Blueprint, esimerkiksi PROJ_Fireball. Myöhemmin luodaan vielä ProjectileBase-Blueprint, josta kaikki projektiilit periytyvät. Projektiilille luodaan Sphere-muoto, Box/SphereCollision-törmäysmuoto ja ProjectileMovement-komponentti (Kuva 56). 
+Projektiili-luokka on nyt olemassa, joten sen pystyy laittamaan nyt kohdassa viisi määriteltyyn funktioon synnytettäväksi luokaksi GA_Fireball-luokan sisällä.
 
 ![59](https://user-images.githubusercontent.com/55107172/147578239-0f09d576-95b6-4b65-8dce-41087a87bde9.PNG)
 Kuva 56. PROJ_Fireball
 
-![60](https://user-images.githubusercontent.com/55107172/147578260-66106176-80b6-4734-b88a-93cf839927f6.PNG)
-
 
 7. Määritellään BeginPlay-tapahtumassa miten pitkään projektiili kuuluu lentää ilmassa, ennen kuin se katoaa (Kuva 57).
 
-
+![60](https://user-images.githubusercontent.com/55107172/147578260-66106176-80b6-4734-b88a-93cf839927f6.PNG)
 Kuva 57. PROJ_Fireball // Projektiilin lentomatka määritetään näin.
+
+8. Tarkistetaan mihin Collision-komponentti osuu OverLap-funktiolla. Nyt haluan että projektiili reagoi vain luomaani BP_TestEnemyCharacter-Blueprinttiin, joka on vain HeroCharacter-aliluokka erivärisenä. Jatkossa luodaan EnemyCharacterBase-luokka josta kaikki viholliset periytyvät ja osumaa voi tarkastella niihin. Kannattaa myös huomioida että ensimmäisenä Collision-komponentti luultavasti osuu projektiilin luojaan ja pitääkö sen tuhoutua jos se osuu vaikka seinään. Tällä hetkellä riittää kuitenkin että se reagoi vain yhteen haluttuun kohteeseen (Kuva 58).
+
+![61](https://user-images.githubusercontent.com/55107172/147580266-b6e1e234-c8c9-42e3-89c1-6ebe4bd058f5.PNG)
+Kuva 58.  PROJ_Fireball
+
+9. Jos projektiili osuu oikeaan kohteeseen siitä kannattaa ottaa ylös tietoa jota voi hyödyntää. Tähän tarvitaan osutun kohteen ASC jonka saa helposti GetAbilitySystemComponent-funktiolla. Kun ASC on muistissa, siitä voi luoda GameplayEventData-rakenteen. Rakenteeseen kannattaa tässä tapauksessa lisätä Target-viittaus joka on osuttu Actor-luokka ja valinnaiseksi objektiksi voi laittaa sen ASC:n.
+Nyt kyvyn Instigator-luokalle on ilmoitettava että kyky on osunut kohteeseen. Tämä tehdään SendGameplayEventToActor-funktiolla johon luodaan uusi Event-tunniste. Tunniste kannattaa olla tapahtumaa kuvaava ja sen tyyli on sama kuin kaikissa GAS:n tunnisteissa, esimerkiksi Projectile.DamageActivation. Funktioon liitetään myös Payload-rakenteeseen äsken luotu GameplayEventData-rakenne sekä Actor-määrittelyyn GetInstigator-funktiolla projektiilin Instigator-luokka. Viimeisenä tuhotaan projektiili DestroyActor-funktiolla (Kuva 59).
+
+![62](https://user-images.githubusercontent.com/55107172/147582889-6eb92f39-f812-438b-bc8c-9ca8b7a85a86.PNG)
+Kuva 59. PROJ_Fireball
+
+10. Viimeseinä kyvyn sisällä pitää ottaa vastaan kohdassa yhdeksän luotu Projectile.DamageActivation-tapahtumatunniste. Kun projektiili on synnytetty kyvyn sisällä, pitää kyvyn odottaa tapahtumaa ja määrittää mitä sitten tapahtuu. Tämä onnistuu WaitGameplayEvent-funktiolla. Funktiossa valitaan mitä tapahtumaa odotetaan ja se määritetään tunnisteella. Tunniste on projektiili-luokassa lähetetty Projectile.DamageAction-tunniste. Seuraavaksi määritellään mitä tapahtuu kun tunniste on saatu ja tällä hetkellä riittää että tiedämme että kyky on saanut Event-tunnisteen onnistuneesti. Viimeiseki lopetetaan ability EndAbility-funktiolla (Kuva 60).
+
+![57](https://user-images.githubusercontent.com/55107172/147583522-0548a539-a22f-445f-85b1-42d4c4785613.PNG)
+Kuva 60. GA_Fireball
+
+
 
 ## 7	Lähdeluettelo
 
