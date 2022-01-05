@@ -480,6 +480,86 @@ void ACharacterBase::AddCharacterAbilities()
 ![50](https://user-images.githubusercontent.com/55107172/146950827-27043110-9c36-4648-997c-e4294dc79711.PNG)
 Kuva 51. BP_HeroCharacter // Kykyjen lisääminen hahmolle Blueprintissä
 
+
+### Oikeasti ensimmäinen kyky
+
+Ensimmäinen kyky on nimeltään HealthRegen. Kyky lisää käyttäjälleen valitunmäärän elämäpisteitä, tekee animaation ja luo halutun partikkeli-efektin visualisoimaan kykyä.
+Kyky koostuu viidestä luokasta, GameplayAblityBase-luokka, kolme GameplayEffect-luokkaa sekä GameplayCue-luokka. Luokat kannattaa selkeyden vuoksi nimetä kuvaavaksi. Itse nimeän GameplayAbility-luokat näin: GA_KyvynNimi. GameplayEffect-luokat ja GameplayCue-luokat nimetään samaa periaatetta käyttäen: GE_EfektinNimi, GE_EfektinNimiCost, CUE_HealthRegen.
+
+1. Aluksi luodaan kyky-luokka (GA_HealthRegen) ja kyvylle efekti-luokka (GE_HealthRegen).
+
+2. Kyvyissä on aina kaksi valmista Event-funktiota käytettävänä. ActivateAbility-funktioon määritellään mitä tapahtuu kun kyky aktivoidaan ja OnEndAbility-funktiossa voi määritellä mitä tapahtuu kun kyky lähtee pois käytöstä tai loppuu. Kyvyn alussa voi kutsua äsken luotua GetPlayerCharacter-funktiota ja tarkistaa CommitAbility-funktiolla voiko kykyä käynnistää, jos ei niin kyky on lopetettava (Kuva 54). Tässä kyvyssä voi kuitenkin GetPlayerCharacter-funktion jättää kutsumatta.
+
+![U54](https://user-images.githubusercontent.com/55107172/148220537-a237a638-c219-413c-bf4b-62f176a56193.PNG)
+Kuva 54. GA_HealthRegen
+
+3. Seuraavaksi määritellään minkä animaation kyvyn käyttäjä toteuttaa. PlayMontageAndWait-funktiolla toteutetaan animaation käynnistys ja siinnä myös määrittellään mitä sen jälkeen tapahtuu. Kykyjen käyttämisessä on tärkeä tietää milloin kyky lopetetaan ja millon sitä ei saa vielä lopettaa. Kyky ei saa jäädä missään tapauksessa elämään, vaan sen on aina sammuttava jos sitä haluaa käyttää uusiksi. Suurimmissa osissa tämä tarkoittaa että kaikki PlayMontageAndWait-funktion OnTapahtuma-funktiot päätetään EndAbility-funktioon (Kuva 55).
+
+![U55](https://user-images.githubusercontent.com/55107172/148221054-f69e35c6-5ce0-4cff-945e-9c0da0affbf2.PNG)
+Kuva 55. GA_HeathRegen
+
+4. Kyvyn omistajalle lisätään efekti, joka lisää omistajan elämäpisteitä ja sitten kyky lopetetaan. Jos haluaa nähdä elämäpistemäärän muuttuvan, voi tehdä kuvan mukaisen PrintString-funktion (Kuva 56). ApplyGameplayEffectToOwner-funktioon määritellään GameplayEffect-luokka, joka on luotu GE_HealthRegen luokka.
+ 
+![U56](https://user-images.githubusercontent.com/55107172/148222130-a3cb6890-f3d8-4c53-aeee-ceb8f55bbaf8.PNG)
+Kuva 56. GA_HealthRegen
+
+5. ClassDefaults-valikossa valitaan myös kyvylle sopiva kyky-ID ja Input-ID, sekä lisätään kykyä kuvaava AbilityTag-tunniste (Kuva 57).
+
+![U57](https://user-images.githubusercontent.com/55107172/148222384-950e5dbc-18ca-40a3-9d9b-d13bf3081a3f.PNG)
+Kuva 57. GA_HealthRegen
+
+6. GE_HealthRegen-luokassa määritetään mitä attribuuttia halutaan muokata ja miten. Tässä kyvyssä lisätään Health-attribuuttiin kaksikymmentä (Kuva 58).
+
+![U58](https://user-images.githubusercontent.com/55107172/148222939-7956dd8b-569d-496c-a22f-3d687c91b810.PNG)
+Kuva 58. GE_HealthRegen
+
+7. GameplayEffectAssetTag kohtaan "Added" voi lisätä efektiä kuvaavan tunnisteen (Kuva 59).
+
+![ylim1](https://user-images.githubusercontent.com/55107172/148233040-ffa3245a-5f97-46a5-b0f4-7af0e669f32c.PNG)
+Kuva 59.
+
+8. Luodaan kaksi uutta GameplayEffect-luokkaa, GE_HealthRegenCost ja GE_HealthRegenCD(Cooldown). Cost-luokassa määritetään paljonko pelaajan manaa kyky maksaa ja CD-luokassa määritellään miten usein kyvyn voi käynnistää tietyssä ajassa.
+
+9. GE_HealthRegenCost-luokassa lisätään Mana-attribuuttiin -20 (Kuva 60) ja annetaan sille oma GameplayEffectAssetTag (Kuva 61).
+
+![U59](https://user-images.githubusercontent.com/55107172/148224415-de6f6f80-fac5-466a-a207-084f99279a19.PNG)
+Kuva 60. GE_HealthRegenCost
+
+![U60](https://user-images.githubusercontent.com/55107172/148224438-9cdb0f74-ccf5-426a-a5a0-e0131b61ae5e.PNG)
+Kuva 61. GE_HealthRegenCost
+
+10. GE_HealthRegenCD-luokassa lisätään Duration-efekti jonka arvoksi voi määritellä haluamansa ajan sekunteina. Kykyä ei pysty käyttämään uudestaan ennen kuin tämä aika on kulunut (Kuva 62). HealthRegenCD-luokalle annetaan myös oma tunnisteensa ja tunniste myös laitetaan GrantedTag-tunnisteisiin lisättäväksi. GrantedTag-tunnisteet annetaan Actor-luokalle, jolle efekti annetaan. Eli pelihahmo saa tässä tapauksessa Skill.HealthRegen.CD-tunnisteen kahdeksaksi sekunniksi (Kuva 63).
+
+![U61](https://user-images.githubusercontent.com/55107172/148225109-13e6eee8-d78e-40a7-b675-88117bfa0df6.PNG)
+Kuva 62. GE_HealthRegenCD
+
+![U62](https://user-images.githubusercontent.com/55107172/148225077-3caa20b9-77a0-45e0-8576-460a83d78de0.PNG)
+Kuva 63. GE_healthRegenCD
+
+11. Tämä on toimintatapa, joka koskee lähes kaikkia kykyjä, jotka tarvitsevat maksun että ne voivat käynnistyä ja "Cooldown"-toiminnon. Viimeiseksi täytyy vielä ottaa Cost-efekti ja CD-efekti käyttöön kyky-luokassa. GA_HealthRegen-luokassa on valmiiksi luodut kohdat "Cost" ja "Cooldown", jonne määritellään luodut efekti-luokat (Kuva 64).
+
+![U63](https://user-images.githubusercontent.com/55107172/148226488-dc4d25b4-d0f8-438d-b91b-2d904d5a73d0.PNG)
+Kuva 64. GA_HealthRegen
+
+Nyt kyky maksaa valitun määrän Mana-attribuuttia ja sitä ei voi käyttää peräkkäin. Jos kyky ei toimi halutusti, kannattaa lukea dokumentaatiosta kohta "Debug".
+
+12. Kykyyn voi halutessaan luoda vielä visuaalisen-efektin. Visuaaliset asiat hoidetaan yleensä GameplayCue-luokilla. CUE-luokka replikoituu automaattisesti kaikille pelaajille eikä niiden replikointi ole niin raskasta serverille. Optimaalisessa moninpelissä kaikki kykyjen toiminnot pitäisi tapahtua vain serverillä, ja mitä pelaajille näkyy on vain visuaalinen esitys siitä. Visuaalinen esitys yleensä on CUE-luokassa tehty partikkeli ja ääni. GameplayCueNotify_Static on luokka jota HealthRegen-kyky käyttää.
+
+13. CUE-luokassa on valmiita funktiota jotka voi ylikirjoittaa. HealthRegen-kyvyssä tarvitaan niistä vain OnExecute-funktiota. Kun CUE-luokka käynnistyy se luo partikkelin. Partikkeli jää elämään loputtomiin jos sitä ei ole määritetty loppumaan. Demossa partikkeli on määritetty syntymään vain kerran ParticleSystem-luokassa (Kuva 65).
+
+![U65](https://user-images.githubusercontent.com/55107172/148232267-a9e07a66-1eab-4902-bb98-58533b9ea414.PNG)
+Kuva 65. CUE_HealthRegen
+
+14. ClassDefaults-valikossa pystyy lisäämään myös GameplayCue-luokalle tunnisteen. Kun GE_HealthRegen-efekti aktivoituu se aktivoi myös GameplayCue-luokan tunnisteen perusteella (Kuva 66).
+
+![U64](https://user-images.githubusercontent.com/55107172/148232378-882b198d-11ad-4468-9209-90c73c23aeb3.PNG)
+Kuva 66. CUE_HealthRegen
+
+15. GE_HealthRegen-luokassa ClassDefaults-valikossa on kohta "Display", johon lisätään GameplayCueTag-tunniste (Kuva 67).
+
+![U66](https://user-images.githubusercontent.com/55107172/148232944-8d912e9c-b992-46ca-b5ee-2eff1dcf5be7.PNG)
+Kuva 67. GE_HealthRegen
+
 ### Ensimmäinen kyky
 
 ![51](https://user-images.githubusercontent.com/55107172/147260728-580a1c6c-ee65-4509-be60-64d5eb494bca.PNG)
