@@ -925,11 +925,32 @@ Funktiot tarkastelee kykyjen Cooldown-tunnisteen tilaa ja sen perusteella voi mu
 ![65](https://user-images.githubusercontent.com/55107172/148731024-a210e9f5-3091-4f9f-9a2f-932c96539b0c.PNG)
 Kuva 77. UI_HeroCharacter // Pelatessa näkyvä käyttöliittymä.
 
-6. Käyttöliittymä-blueprint tarvitsee Current,- ja Max,- Float-muuttujat elämäpisteille ja manalle sekä kaksi funktiota, SetHealth ja SetMana (Kuva 78). UserWidget C++-luokassa luodut Set-funktiot kutsutaan Käyttöliittymän Blueprintissä, ja muuttujien arvot asetetaan niiden kautta (Kuva 79).
+6. Käyttöliittymä-blueprint tarvitsee Current,- ja Max,- Float-muuttujat elämäpisteille. UserWidget C++-luokassa luodut Set-funktiot kutsutaan Käyttöliittymän Blueprintissä, ja muuttujien arvot asetetaan niiden kautta (Kuva 78). Blueprintille luodaan myös kaksi funktiota, SetHealth ja SetMana (Kuva 79).
 
+![66](https://user-images.githubusercontent.com/55107172/148733198-3ebfa7d5-3208-4be8-8b36-c4d07394550b.PNG)
 Kuva 78. UI_HeroCharacter
 
+![67](https://user-images.githubusercontent.com/55107172/148733320-5e36ce49-ac12-4a99-b916-5647fd6a6115.PNG)
 Kuva 79. UI_HeroCharacter
+
+7. Attribuuttien muutoksien kuuntelemiseen tarvitsee aluksi ASC:n, joka haetaan käyttöliittymän omistajalta (Kuva 80). Haluan kuunnella Health,- ja Mana-attribuuttia joten kutsun luotua ASyncListenForAttributesChange-funktiota ja luon sille taulukon joka pitää sisällään halutut attribuutit (Kuva 81). Seuraavaksi tarkistetaan kumpaa attribuuttia muutetaan ja asetetaan sen perusteella CurrentHealth-attribuutin tai CurrentMana-attribuutin arvo (Kuva 82).
+
+![68](https://user-images.githubusercontent.com/55107172/148734387-091b8265-4b5c-4ce3-a5ea-71a6ecede03d.PNG)
+Kuva 80. UI_HeroCharacter
+
+![69](https://user-images.githubusercontent.com/55107172/148734397-302d841f-1f0e-488d-8035-9b46c67bb0c7.PNG)
+Kuva 81. UI_HeroCharacter
+
+![70](https://user-images.githubusercontent.com/55107172/148734407-fded8a3c-a143-4171-accd-28e8971f006b.PNG)
+Kuva 82. UI_HeroCharacter
+
+8. Viimeisenä luodaan pelihahmon Controller-luokasta Blueprint ja laitetaan käyttöliittymä näkymään pelaajalle (Kuva 83).
+
+![71](https://user-images.githubusercontent.com/55107172/148734699-4a7bc663-5ebd-41e0-b1ed-41f5f5ab41e7.PNG)
+Kuva 83. BP_HeroPlayerController
+
+![image](https://user-images.githubusercontent.com/55107172/148734619-ec74835c-0ed4-492c-9766-2dbe3f4f01b9.png)
+
 
 ```c++
 ```
