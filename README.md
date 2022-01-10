@@ -616,6 +616,337 @@ Kuva 61. Luodun GameplayAbility-luokan idea.
 ![64](https://user-images.githubusercontent.com/55107172/147585322-7f0965e9-5d24-401b-a80b-99b4ae68b5fb.PNG)
 Kuva 62. Luodun Projectile-luokan idea.
 
+## 7.1 Käyttöliittymä
+
+Tässä osiossa toteutan yksinkertaisen käyttöliittymän. Käyttöliittymän idea on vain näyttää visuaalisesti, milloin kykyjä pystyy käyttämään ja milloin ei. Käyttöliittymästä näkee myös Mana-attribuutin sekä Health-attribuutin. Käyttöliittymä ei ole projektin idea, joten käyn sen läpi nopeasti ja koodi on täysin sama kuin Tranekin GAS-dokumentaatiossa.
+
+1. Ensiksi luodaan C++-luokka UserWidget. Luokkaan lisätään käyttöliittymässä käytettävien attribuuttejen Setter-funktiot max,- current ja prosentti-attribuuteille.
+
+```c++
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetMaxHealth(float MaxHealth);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetCurrentHealth(float CurrentHealth);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetHealthPercentage(float HealthPercentage);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetHealthRegenRate(float HealthRegenRate);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetMaxMana(float MaxMana);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetCurrentMana(float CurrentMana);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetManaPercentage(float ManaPercentage);
+
+```
+2. Käyttöliittymä tarkastelee attribuuttien arvoja ASyncTask-funktiolla. Luodaan BlueprintAsyncActionBase C++-luokka, sen funktiot ja paramentrit.
+
+```c++
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAttributeChanged, FGameplayAttribute, Attribute, float, NewValue, float, OldValue);
+```
+
+```c++
+public:
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChanged OnAttributeChanged;
+
+	// Listens for an attribute changing.
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
+	static UAsyncTaskAttributeChanged* ListenForAttributeChange(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAttribute Attribute);
+
+	// Listens for an attribute changing.
+	// Version that takes in an array of Attributes. Check the Attribute output for which Attribute changed.
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
+	static UAsyncTaskAttributeChanged* ListenForAttributesChange(UAbilitySystemComponent* AbilitySystemComponent, TArray<FGameplayAttribute> Attributes);
+
+	// You must call this function manually when you want the AsyncTask to end.
+	// For UMG Widgets, you would call it in the Widget's Destruct event.
+	UFUNCTION(BlueprintCallable)
+	void EndTask();
+
+protected:
+
+	UPROPERTY()
+	UAbilitySystemComponent* ASC;
+	
+	FGameplayAttribute AttributeToListenFor;
+	TArray<FGameplayAttribute> AttributesToListenFor;
+
+	void AttributeChanged(const FOnAttributeChangeData& Data);
+
+```
+```c++
+UAsyncTaskAttributeChanged* UAsyncTaskAttributeChanged::ListenForAttributeChange(UAbilitySystemComponent* AbilitySystemComponent, FGameplayAttribute Attribute)
+{
+	UAsyncTaskAttributeChanged* WaitForAttributeChangedTask = NewObject<UAsyncTaskAttributeChanged>();
+	WaitForAttributeChangedTask->ASC = AbilitySystemComponent;
+	WaitForAttributeChangedTask->AttributeToListenFor = Attribute;
+
+	if (!IsValid(AbilitySystemComponent) || !Attribute.IsValid())
+	{
+		WaitForAttributeChangedTask->RemoveFromRoot();
+		return nullptr;
+	}
+
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).AddUObject(WaitForAttributeChangedTask, &UAsyncTaskAttributeChanged::AttributeChanged);
+
+	return WaitForAttributeChangedTask;
+}
+
+UAsyncTaskAttributeChanged* UAsyncTaskAttributeChanged::ListenForAttributesChange(UAbilitySystemComponent* AbilitySystemComponent, TArray<FGameplayAttribute> Attributes)
+{
+	UAsyncTaskAttributeChanged* WaitForAttributeChangedTask = NewObject<UAsyncTaskAttributeChanged>();
+	WaitForAttributeChangedTask->ASC = AbilitySystemComponent;
+	WaitForAttributeChangedTask->AttributesToListenFor = Attributes;
+
+	if (!IsValid(AbilitySystemComponent) || Attributes.Num() < 1)
+	{
+		WaitForAttributeChangedTask->RemoveFromRoot();
+		return nullptr;
+	}
+
+	for (FGameplayAttribute Attribute : Attributes)
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).AddUObject(WaitForAttributeChangedTask, &UAsyncTaskAttributeChanged::AttributeChanged);
+	}
+
+	return WaitForAttributeChangedTask;
+}
+
+void UAsyncTaskAttributeChanged::EndTask()
+{
+	if (IsValid(ASC))
+	{
+		ASC->GetGameplayAttributeValueChangeDelegate(AttributeToListenFor).RemoveAll(this);
+
+		for (FGameplayAttribute Attribute : AttributesToListenFor)
+		{
+			ASC->GetGameplayAttributeValueChangeDelegate(Attribute).RemoveAll(this);
+		}
+	}
+
+	SetReadyToDestroy();
+	MarkPendingKill();
+}
+
+void UAsyncTaskAttributeChanged::AttributeChanged(const FOnAttributeChangeData& Data)
+{
+	OnAttributeChanged.Broadcast(Data.Attribute, Data.NewValue, Data.OldValue);
+}
+```
+ListenForAttributeChange-funktiot odottaa valittujen attribuuttien muuttumista ja käyttöliittymää päivitetään muutoksien mukaan. Funktioita on kaksi, toinen yhdelle attribuutille ja toinen attribuutti-taulukolle. EndTask-funktiota kutsutaan manuaalisesti käyttöliittymässä, ettei AsyncTask-funktio jää elämään ikuisesti.
+
+3. Cooldown-efektin visualisoimiseksi luon myös UBlueprintAsyncActionBase C++-luokan ja annan sille tarvittavat parametrit ja funktiot. 
+
+```c++
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCooldownChanged, FGameplayTag, CooldownTag, float, TimeRemaining, float, Duration);
+```
+
+
+```c++
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnCooldownChanged OnCooldownBegin;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCooldownChanged OnCooldownEnd;
+
+	// Listens for changes (Begin and End) to cooldown GameplayEffects based on the cooldown tag.
+	// UseServerCooldown determines if the Sever's cooldown is returned in addition to the local predicted cooldown.
+	// If using ServerCooldown, TimeRemaining and Duration will return -1 to signal local predicted cooldown has begun.
+	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
+	static UAsyncTaskCooldownChanged* ListenForCooldownChange(UAbilitySystemComponent* AbilitySystemComponent, FGameplayTagContainer CooldownTags, bool UseServerCooldown);
+
+	// You must call this function manually when you want the AsyncTask to end.
+	// For UMG Widgets, you would call it in the Widget's Destruct event.
+	UFUNCTION(BlueprintCallable)
+	void EndTask();
+
+protected:
+	UPROPERTY()
+	UAbilitySystemComponent* ASC;
+
+	FGameplayTagContainer CooldownTags;
+
+	bool UseServerCooldown;
+
+	virtual void OnActiveGameplayEffectAddedCallback(UAbilitySystemComponent* Target, const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveHandle);
+	virtual void CooldownTagChanged(const FGameplayTag CooldownTag, int32 NewCount);
+
+	bool GetCooldownRemainingForTag(FGameplayTagContainer CooldownTags, float& TimeRemaining, float& CooldownDuration);
+
+```
+
+```c++
+UAsyncTaskCooldownChanged * UAsyncTaskCooldownChanged::ListenForCooldownChange(UAbilitySystemComponent * AbilitySystemComponent, FGameplayTagContainer InCooldownTags, bool InUseServerCooldown)
+{
+	UAsyncTaskCooldownChanged* ListenForCooldownChange = NewObject<UAsyncTaskCooldownChanged>();
+	ListenForCooldownChange->ASC = AbilitySystemComponent;
+	ListenForCooldownChange->CooldownTags = InCooldownTags;
+	ListenForCooldownChange->UseServerCooldown = InUseServerCooldown;
+
+	if (!IsValid(AbilitySystemComponent) || InCooldownTags.Num() < 1)
+	{
+		ListenForCooldownChange->EndTask();
+		return nullptr;
+	}
+
+	AbilitySystemComponent->OnActiveGameplayEffectAddedDelegateToSelf.AddUObject(ListenForCooldownChange, &UAsyncTaskCooldownChanged::OnActiveGameplayEffectAddedCallback);
+
+	TArray<FGameplayTag> CooldownTagArray;
+	InCooldownTags.GetGameplayTagArray(CooldownTagArray);
+	
+	for (FGameplayTag CooldownTag : CooldownTagArray)
+	{
+		AbilitySystemComponent->RegisterGameplayTagEvent(CooldownTag, EGameplayTagEventType::NewOrRemoved).AddUObject(ListenForCooldownChange, &UAsyncTaskCooldownChanged::CooldownTagChanged);
+	}
+
+	return ListenForCooldownChange;
+}
+
+void UAsyncTaskCooldownChanged::EndTask()
+{
+	if (IsValid(ASC))
+	{
+		ASC->OnActiveGameplayEffectAddedDelegateToSelf.RemoveAll(this);
+
+		TArray<FGameplayTag> CooldownTagArray;
+		CooldownTags.GetGameplayTagArray(CooldownTagArray);
+
+		for (FGameplayTag CooldownTag : CooldownTagArray)
+		{
+			ASC->RegisterGameplayTagEvent(CooldownTag, EGameplayTagEventType::NewOrRemoved).RemoveAll(this);
+		}
+	}
+
+	SetReadyToDestroy();
+	MarkPendingKill();
+}
+
+void UAsyncTaskCooldownChanged::OnActiveGameplayEffectAddedCallback(UAbilitySystemComponent * Target, const FGameplayEffectSpec & SpecApplied, FActiveGameplayEffectHandle ActiveHandle)
+{
+	FGameplayTagContainer AssetTags;
+	SpecApplied.GetAllAssetTags(AssetTags);
+	
+	FGameplayTagContainer GrantedTags;
+	SpecApplied.GetAllGrantedTags(GrantedTags);
+
+	TArray<FGameplayTag> CooldownTagArray;
+	CooldownTags.GetGameplayTagArray(CooldownTagArray);
+
+	for (FGameplayTag CooldownTag : CooldownTagArray)
+	{
+		if (AssetTags.HasTagExact(CooldownTag) || GrantedTags.HasTagExact(CooldownTag))
+		{
+			float TimeRemaining = 0.0f;
+			float Duration = 0.0f;
+			// Expecting cooldown tag to always be first tag
+			FGameplayTagContainer CooldownTagContainer(GrantedTags.GetByIndex(0));
+			GetCooldownRemainingForTag(CooldownTagContainer, TimeRemaining, Duration);
+
+			if (ASC->GetOwnerRole() == ROLE_Authority)
+			{
+				// Player is Server
+				OnCooldownBegin.Broadcast(CooldownTag, TimeRemaining, Duration);
+			}
+			else if (!UseServerCooldown && SpecApplied.GetContext().GetAbilityInstance_NotReplicated())
+			{
+				// Client using predicted cooldown
+				OnCooldownBegin.Broadcast(CooldownTag, TimeRemaining, Duration);
+			}
+			else if (UseServerCooldown && SpecApplied.GetContext().GetAbilityInstance_NotReplicated() == nullptr)
+			{
+				// Client using Server's cooldown. This is Server's corrective cooldown GE.
+				OnCooldownBegin.Broadcast(CooldownTag, TimeRemaining, Duration);
+			}
+			else if (UseServerCooldown && SpecApplied.GetContext().GetAbilityInstance_NotReplicated())
+			{
+				// Client using Server's cooldown but this is predicted cooldown GE.
+				// This can be useful to gray out abilities until Server's cooldown comes in.
+				OnCooldownBegin.Broadcast(CooldownTag, -1.0f, -1.0f);
+			}
+		}
+	}
+}
+
+void UAsyncTaskCooldownChanged::CooldownTagChanged(const FGameplayTag CooldownTag, int32 NewCount)
+{
+	if (NewCount == 0)
+	{
+		OnCooldownEnd.Broadcast(CooldownTag, -1.0f, -1.0f);
+	}
+}
+
+bool UAsyncTaskCooldownChanged::GetCooldownRemainingForTag(FGameplayTagContainer InCooldownTags, float & TimeRemaining, float & CooldownDuration)
+{
+	if (IsValid(ASC) && InCooldownTags.Num() > 0)
+	{
+		TimeRemaining = 0.f;
+		CooldownDuration = 0.f;
+
+		FGameplayEffectQuery const Query = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(InCooldownTags);
+		TArray< TPair<float, float> > DurationAndTimeRemaining = ASC->GetActiveEffectsTimeRemainingAndDuration(Query);
+		if (DurationAndTimeRemaining.Num() > 0)
+		{
+			int32 BestIdx = 0;
+			float LongestTime = DurationAndTimeRemaining[0].Key;
+			for (int32 Idx = 1; Idx < DurationAndTimeRemaining.Num(); ++Idx)
+			{
+				if (DurationAndTimeRemaining[Idx].Key > LongestTime)
+				{
+					LongestTime = DurationAndTimeRemaining[Idx].Key;
+					BestIdx = Idx;
+				}
+			}
+
+			TimeRemaining = DurationAndTimeRemaining[BestIdx].Key;
+			CooldownDuration = DurationAndTimeRemaining[BestIdx].Value;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+```
+Funktiot tarkastelee kykyjen Cooldown-tunnisteen tilaa ja sen perusteella voi muokata käyttöliittymän ikoneja. 
+
+4. Luodusta UserWidget C++-luokasta tehdään Blueprint, joka sisältää Canvas-paneelin, manalle ja elämäpisteille ProgressBar-palkit ja kuva kykyjen ikonien kehikolle (Kuva 77).
+
+![65](https://user-images.githubusercontent.com/55107172/148731024-a210e9f5-3091-4f9f-9a2f-932c96539b0c.PNG)
+Kuva 77. UI_HeroCharacter // Pelatessa näkyvä käyttöliittymä.
+
+6. Käyttöliittymä-blueprint tarvitsee Current,- ja Max,- Float-muuttujat elämäpisteille ja manalle sekä kaksi funktiota, SetHealth ja SetMana (Kuva 78). UserWidget C++-luokassa luodut Set-funktiot kutsutaan Käyttöliittymän Blueprintissä, ja muuttujien arvot asetetaan niiden kautta (Kuva 79).
+
+Kuva 78. UI_HeroCharacter
+
+Kuva 79. UI_HeroCharacter
+
+```c++
+```
+
+
+
+
+## 7.2 Viholliset
+
+## 7.3 Vahinkonumero ja elämäpistepalkki
+
+## 7.4 Uudet funktiot
+
+## 7.5 ...
+
+
+
 ## 7	Lähdeluettelo
 
 
