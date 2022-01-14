@@ -952,6 +952,27 @@ Kuva 83. BP_HeroPlayerController
 ![image](https://user-images.githubusercontent.com/55107172/148734619-ec74835c-0ed4-492c-9766-2dbe3f4f01b9.png)
 
 
+### 7.1.1 Kykyjen visualisointi käyttöliittymässä
+
+Kyvyt täytyy olla merkitty käyttöliittymään selkeyden ja pelaajan auttamisen vuoksi. Kyvyt kovakoodataan projektissa niiden omille paikoilleen ja niiden visualisoimiseen käytetään nopeasti itsetehtyjä ikoneja. Kunnollisen käyttöliittymän suunnittelu vaatii työtä ja aikaa, joten tässä vaiheessa kykyjen ikonien ja Cooldown-efektin näyttäminen ikoneissa riittää. Toteutus luodaan mahdollisimman yksinkertaisesti.
+
+1. Aluksi tarvitaan kehikko mihin kykyjen ikonit sijoitetaan. Ikonien päälle voi halutessa myös lisätä teksti-laatikolla kirjaimen, joka kuvastaa mistä näppäimestä kyky aktivoidaan (kuva 84).
+
+![hud1](https://user-images.githubusercontent.com/55107172/149519420-5221f221-2a5a-4353-8ab2-522094c420a6.PNG)
+Kuva 84. UI_HeroCharacter
+
+2. ListenForAttributesChange-funktiosta jatketaan liittämällä Exec-pinni ListenForCooldownChange-funktioon. Funktioon liitetään PlayerState-luokasta saatu ASC ja luodaan taulukko käsitellyistä tunnisteista. Tällä hetkellä minulla on kaksi kykyä ja niillä kummallakin on Cooldown-efektille tunnisteet. UseServerCooldown-boolean muuttuja laitetaan myös todeksi (kuva 85).
+
+![hud2](https://user-images.githubusercontent.com/55107172/149519464-c02490ad-6ade-4818-be5c-0658b59a679f.PNG)
+Kuva 85. UI_HeroCharacter
+
+3. ListenForCooldownChange-funktiossa on määritelty kaksi funktiota, OnCooldownBegin ja OnCooldownEnd. Molemmissa tarkistetaan aluksi minkä kyvyn tunniste on kyseessä. OnCooldownEnd-funktiossa laitetaan vain kuvien läpikuultamattomuus arvolle yksi. OnCooldownBegin-funktiossa voidaan tarkistaa paljon aikaa on jälellä ja asettaa kuville sen perusteella läpikuultamattomuus arvo (kuva 86).
+
+![Hud4](https://user-images.githubusercontent.com/55107172/149519693-3d134673-eaba-4468-9a18-c95f5b76a29b.PNG)
+kuva 86. UI_HeroCharacter
+
+Nyt kun ASC:lla on Cooldown-tunniste, ikonit muuttuvat läpikuultaviksi. Kun Cooldown-tunniste lähtee, ikonit muuttuvat normaaliksi.
+
 ```c++
 ```
 
