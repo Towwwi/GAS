@@ -976,7 +976,14 @@ Nyt kun ASC:lla on Cooldown-tunniste, ikonit muuttuvat läpikuultaviksi. Kun Coo
 ```c++
 ```
 
+![ai1r](https://user-images.githubusercontent.com/55107172/149536025-cb6d4c95-33c7-4844-a017-928747358a4e.PNG)
 
+![ai2](https://user-images.githubusercontent.com/55107172/149536098-eac86e3b-cd77-4fac-8fce-4fdd8f69fd9a.PNG)
+
+![ai3](https://user-images.githubusercontent.com/55107172/149536133-24b3da28-5e50-4363-911c-9367ee4a93da.PNG)
+
+![ai4](https://user-images.githubusercontent.com/55107172/149536290-0f310169-f48d-4524-9db2-6a80decf266b.PNG)
+![ai5](https://user-images.githubusercontent.com/55107172/149536354-f2fae6de-f094-4c6b-a4e6-061236f22fe3.PNG)
 
 
 ## 7.2 Viholliset
