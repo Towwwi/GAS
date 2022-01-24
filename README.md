@@ -986,6 +986,17 @@ Nyt kun ASC:lla on Cooldown-tunniste, ikonit muuttuvat läpikuultaviksi. Kun Coo
 ![ai5](https://user-images.githubusercontent.com/55107172/149536354-f2fae6de-f094-4c6b-a4e6-061236f22fe3.PNG)
 
 
+## DamageText
+
+1. Luodaan uusi WidgetComponent-C++-luokka. 
+2. Luokkaan lisätään yksi junlkinen funktio jota käytetään tekstin asettamiseksi Blueprintissä.
+	c++//
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetDamageText(float Damage);
+
+4. 
+
+
 ## 7.2 Viholliset
 
 ## 7.3 Vahinkonumero ja elämäpistepalkki
