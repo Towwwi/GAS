@@ -996,6 +996,15 @@ Nyt kun ASC:lla on Cooldown-tunniste, ikonit muuttuvat läpikuultaviksi. Kun Coo
 
 4. 
 
+![EnemyBar1](https://user-images.githubusercontent.com/55107172/150975025-f38ce231-850f-4f8a-b356-479d739acba1.PNG)
+
+![enemybar2](https://user-images.githubusercontent.com/55107172/150976007-a24b2c6f-5f92-4617-a95d-f477ac8c3655.PNG)
+
+![dmgnum1](https://user-images.githubusercontent.com/55107172/150982218-24b4a65e-610c-4f56-b608-76f5c4e4151c.PNG)
+
+![dmgnum1](https://user-images.githubusercontent.com/55107172/150982917-3e66419e-f608-4cf8-ab6c-4a4254f0a9ce.PNG)
+![dmgnum2](https://user-images.githubusercontent.com/55107172/150983051-cf886d30-682f-44dd-8d96-ef9bbe2e0f1d.PNG)
+![dmgnum3](https://user-images.githubusercontent.com/55107172/150984573-da41955f-4061-4540-967c-fc0bd986966e.PNG)
 
 ## 7.2 Viholliset
 
