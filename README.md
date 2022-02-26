@@ -1005,6 +1005,18 @@ Nyt kun ASC:lla on Cooldown-tunniste, ikonit muuttuvat läpikuultaviksi. Kun Coo
 ![dmgnum1](https://user-images.githubusercontent.com/55107172/150982917-3e66419e-f608-4cf8-ab6c-4a4254f0a9ce.PNG)
 ![dmgnum2](https://user-images.githubusercontent.com/55107172/150983051-cf886d30-682f-44dd-8d96-ef9bbe2e0f1d.PNG)
 ![dmgnum3](https://user-images.githubusercontent.com/55107172/150984573-da41955f-4061-4540-967c-fc0bd986966e.PNG)
+![dfdfdfde](https://user-images.githubusercontent.com/55107172/155840974-ed649308-208d-4a42-88c7-4bc116221ecb.PNG)
+
+![pickup1](https://user-images.githubusercontent.com/55107172/155841705-87e22e56-d457-4f01-8c6c-47a8a5f7ad08.PNG)
+![image](https://user-images.githubusercontent.com/55107172/155841915-9a0e2238-d9fa-4abd-9efe-cb0ba11b8d1a.png)
+![p3](https://user-images.githubusercontent.com/55107172/155842012-e9a44012-a8ef-46d7-afd0-a2ceedfc4a41.PNG)
+![gold](https://user-images.githubusercontent.com/55107172/155842484-24b6b3c8-8b67-4a0c-b195-d984a61417eb.PNG)
+![image](https://user-images.githubusercontent.com/55107172/155842661-c0e804ec-33df-477d-8a21-21a16ff98fcc.png)
+![image](https://user-images.githubusercontent.com/55107172/155842910-7541d6e2-aa4e-47ac-abad-955d481a5309.png)
+
+
+
+![Capture](https://user-images.githubusercontent.com/55107172/155841944-7b7b36a9-9349-48b4-a6f7-018aa119aef8.PNG)
 
 ## 7.2 Viholliset
 
