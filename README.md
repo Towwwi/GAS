@@ -1,5 +1,9 @@
-# GAS
-GAS dokumentaatio
+# GAS dokumentaatio
+
+## Kaikki projektiin löytyvä tieto lötyy kohdasta "Wiki".
+
+## Demo-projecti on ladattavissa master-haarassa.
+
 
 
 ## Käsitteet
