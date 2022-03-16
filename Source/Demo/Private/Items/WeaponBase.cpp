@@ -16,6 +16,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 
+// Weapons are not replicated
 
 AWeaponBase::AWeaponBase()
 {
@@ -39,7 +40,7 @@ void AWeaponBase::Equip(class AHeroCharacter* character)
 
 	if (WeaponState == EWeaponState::EWS_Pickup)
 	{ 
-	//ServerEquip(character);
+	
 	SetInstigator(character);
 	SkeletalMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	SkeletalMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
@@ -125,6 +126,11 @@ void AWeaponBase::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor*
 			Main->SetActiveOverlappingItem(nullptr); // if endoverlap with weapon, set overlappeditem to nullpointer
 		}
 	}
+}
+
+FORCEINLINE void AWeaponBase::SetWeaponState(EWeaponState State)
+{
+	WeaponState = State;
 }
 
 void AWeaponBase::CombatOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

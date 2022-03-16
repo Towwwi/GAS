@@ -9,7 +9,7 @@
 #include "GameplayAbilitySpec.h"
 #include "Character/Hero/PlayerControllerBase.h"
 #include "WeaponBase.generated.h"
-
+// Weapons are not replicated
 
 class AHeroCharacter;
 class UASCBase;
@@ -82,10 +82,12 @@ protected:
 	// Weapon State
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 	EWeaponState WeaponState;
-	FORCEINLINE void SetWeaponState(EWeaponState) { WeaponState = WeaponState; }
+
+	//FORCEINLINE void SetWeaponState(EWeaponState) { WeaponState = WeaponState; }
+	FORCEINLINE void SetWeaponState(EWeaponState State);
 	FORCEINLINE EWeaponState GetWeaponState() { return WeaponState; }
 
-
+	// collisions that can be used in combat
 	UFUNCTION(BlueprintCallable)
 	void CombatOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 

@@ -78,9 +78,9 @@ protected:
 
 	// Blueprint implementable effects
 	UFUNCTION(BlueprintImplementableEvent, Meta = (DisplayName = "OnRespawned"))
-		void K2_OnRespawned();
+	void K2_OnRespawned();
 
 	UFUNCTION()
-		virtual void OnRep_IsActive();
+	virtual void OnRep_IsActive();
 
 };

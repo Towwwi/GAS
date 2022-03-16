@@ -110,7 +110,7 @@ void APickupBase::GivePickupTo(AHeroCharacter* Pawn)
 			continue;
 		}
 
-		//TODO
+		
 		FGameplayEffectSpecHandle NewHandle = ASC->MakeOutgoingSpec(EffectClass, Pawn->GetCharacterLevel(), EffectContext); 
 
 		if (NewHandle.IsValid())

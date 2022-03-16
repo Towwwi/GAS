@@ -9,8 +9,6 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 
-//////////////////////////////////////////////////////////////////////////
-// ADemoCharacter
 
 ADemoCharacter::ADemoCharacter()
 {
@@ -43,8 +41,6 @@ ADemoCharacter::ADemoCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,12 +75,7 @@ void ADemoCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 void ADemoCharacter::OnResetVR()
 {
-	// If Demo is added to a project via 'Add Feature' in the Unreal Editor the dependency on HeadMountedDisplay in Demo.Build.cs is not automatically propagated
-	// and a linker error will result.
-	// You will need to either:
-	//		Add "HeadMountedDisplay" to [YourProject].Build.cs PublicDependencyModuleNames in order to build successfully (appropriate if supporting VR).
-	// or:
-	//		Comment or delete the call to ResetOrientationAndPosition below (appropriate if not supporting VR)
+
 	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
 }
 

@@ -8,14 +8,6 @@
 #include "Character/Hero/PlayerControllerBase.h"
 #include "Net/UnrealNetwork.h"
 
-
-/*
-!!!
-Katso miten tämä on dokumentoitu tranekin dokkarissa -> ota kuvat ja selitä dokumentaatioon mitä nämä funkkarit tekee. seuraavaksi annetaan attribute set käyttöön character luokalle
-Täydenä postgameplayeffectexecute loppunu
-!!
-*/
-
 UAttributeSetBase::UAttributeSetBase()
 {
 
@@ -136,12 +128,11 @@ void UAttributeSetBase::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			if (TargetCharacter && WasAlive)
 			{
 				// This is the log statement for damage received. Turned off for live games.
-				UE_LOG(LogTemp, Log, TEXT("%s() %s Damage Received: %f"), TEXT(__FUNCTION__), *GetOwningActor()->GetName(), LocalDamageDone);
+				//UE_LOG(LogTemp, Log, TEXT("%s() %s Damage Received: %f"), TEXT(__FUNCTION__), *GetOwningActor()->GetName(), LocalDamageDone);
 
 				// Play HitReact animation and sound with a multicast RPC.
 				const FHitResult* Hit = Data.EffectSpec.GetContext().GetHitResult();
 
-				//DAMAGE NUMBERS bugaa täs tai playercontroller
 
 				// Show damage number for the Source player unless it was self damage
 				if (SourceActor != TargetActor)
