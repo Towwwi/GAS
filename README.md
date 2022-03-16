@@ -8,4 +8,4 @@ Video 1: https://youtu.be/dn5XJDpCmu0
 
 Video 2: https://youtu.be/KJcqjVhrW08
 
-## Kaikki projektiin löytyvä tieto löytyy kohdasta "Wiki".
+### Kaikki projektiin löytyvä tieto löytyy kohdasta "Wiki".
