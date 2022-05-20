@@ -1,11 +1,8 @@
 # Unreal Engine ja Gameplay Ability System
 
-## Youtube linkit
+## Youtube linkki
 
-Tässä on linkit Youtube-videoihin, mistä näkee millaisia kykyjä jä toimintoja dokumentaation avulla pystyy tekemään.
-
-Video 1: https://youtu.be/dn5XJDpCmu0
-
-Video 2: https://youtu.be/KJcqjVhrW08
+[Video 1: https://youtu.be/dn5XJDpCmu0
+](https://www.youtube.com/watch?v=Jd4xKmdOlp8.)
 
 ### Kaikki projektiin löytyvä tieto löytyy kohdasta "Wiki".
