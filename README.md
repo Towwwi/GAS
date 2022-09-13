@@ -2,7 +2,7 @@
 
 ## Projekti on toteutettu Unreal engine 4:llä. Unreal Engine 5 -versiolla kykyjen ja toimintojen luonti toimii samalla tavalla, mutta näkymät saattavat olla erillaisia.
 
-##Projekti toimii myös Unreal engine 5 -versiolla, jos projektin ladattua (ennen projektin rakentamista) valitsee "Switch Unreal Engine Version".
+## Projekti toimii myös Unreal engine 5 -versiolla, jos projektin ladattua (ennen projektin rakentamista) valitsee "Switch Unreal Engine Version".
 
 ## Youtube linkki
 
