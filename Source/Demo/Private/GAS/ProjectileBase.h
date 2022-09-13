@@ -13,7 +13,7 @@ class AProjectileBase : public AActor
 	GENERATED_BODY()
 	
 public:
-	// Sets default values for this actor's properties
+	// Sets default values
 	AProjectileBase();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Meta = (ExposeOnSpawn = true))

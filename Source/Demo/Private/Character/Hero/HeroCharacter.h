@@ -40,7 +40,7 @@ protected:
 	// Conversely, the PlayerState might be repped before the PlayerController calls ClientRestart so the Actor's InputComponent would be null in OnRep_PlayerState.
 	void BindASCInput();
 
-// DEFAULT MOVEMENT SETUP
+	// DEFAULT MOVEMENT SETUP
 public:
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */

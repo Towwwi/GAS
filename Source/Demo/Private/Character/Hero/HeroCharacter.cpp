@@ -34,7 +34,7 @@ AHeroCharacter::AHeroCharacter()
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
 
-	// Create a camera boom (pulls in towards the player if there is a collision)
+	// Create a camera boom
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
@@ -131,7 +131,7 @@ void AHeroCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AHeroCharacter::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &AHeroCharacter::TouchStopped);
 
-// 	// Bind player input to the AbilitySystemComponent. Also called in OnRep_PlayerState because of a potential race condition.
+	// Bind player input to the AbilitySystemComponent. Also called in OnRep_PlayerState because of a potential race condition.
 	BindASCInput();
 }
 

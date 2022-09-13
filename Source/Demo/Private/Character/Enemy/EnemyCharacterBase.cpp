@@ -42,7 +42,7 @@ AEnemyCharacterBase::AEnemyCharacterBase()
 	EnemyBarClass = StaticLoadClass(UObject::StaticClass(), nullptr, TEXT("/Game/Blueprints/UI/UI_EnemyBar.UI_EnemyBar_C"));
 	if (!EnemyBarClass)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s() Failed to find Enemybar. If it was moved, please update the reference location in C++."), *FString(__FUNCTION__));
+		//UE_LOG(LogTemp, Error, TEXT("%s() Failed to find Enemybar. If it was moved, please update the reference location in C++."), *FString(__FUNCTION__));
 	}
 
 

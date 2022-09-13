@@ -31,9 +31,5 @@ EAbilityInputID AbilityID = EAbilityInputID::None;
 // Tells an ability to activate immediately when its granted, used mostly in passives or as other abilities that activates on "Beginplay"
 UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Ability")
 bool ActivateAbilityOnGranted = false;
-
-
-
-// 	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 	
 };

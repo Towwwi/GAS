@@ -78,11 +78,11 @@ void UDefaultDamageExecutionCalc::Execute_Implementation(const FGameplayEffectCu
 
 	if (MitigatedDamage > 0.f)
 	{
-		// Set the Target's damage meta attribute
+		// meta attribute
 		OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(DamageStatics().DamageProperty, EGameplayModOp::Additive, MitigatedDamage));
 	}
 
-	// Broadcast damages to Target ASC
+	// Tell ASC to receive Damage
 	UASCBase* TargetASC = Cast<UASCBase>(TargetAbilitySystemComponent);
 	if (TargetASC)
 	{

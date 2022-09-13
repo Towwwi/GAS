@@ -20,11 +20,11 @@ public:
 
 protected:
 
-	// Actual hard pointer to AbilitySystemComponent
+	//hard pointer to AbilitySystemComponent
 	UPROPERTY()
 	class UASCBase* HardRefAbilitySystemComponent;
 
-	// Actual hard pointer to AttributeSetBase
+	// hard pointer to AttributeSetBase
 	UPROPERTY()
 	class UAttributeSetBase* HardRefAttributeSetBase;
 
